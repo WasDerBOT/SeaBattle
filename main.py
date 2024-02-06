@@ -12,7 +12,7 @@ from api import BascetResource, ProductResource
 from basketapp.views import blueprint as basketapp_blueprint
 from data import db_session
 from data.forms import RegisterForm, LoginForm, ProfileEditForm
-from data.models import User, Product, ProductCategory, Basket
+from data.models import User, Product, Basket
 
 app = Flask(__name__, static_folder='static')
 api = Api(app)

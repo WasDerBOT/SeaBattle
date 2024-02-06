@@ -8,7 +8,7 @@ from werkzeug.utils import secure_filename, redirect
 
 from .forms import CategoryForm, ProductForm
 from data import db_session
-from data.models import ProductCategory, ROLE_ADMIN, Product, User
+from data.models import ROLE_ADMIN, Product, User
 
 blueprint = flask.Blueprint('admin-app', __name__, template_folder='templates')
 

@@ -37,14 +37,51 @@ class User(SqlAlchemyBase, UserMixin, SerializerMixin):
         return self.role == ROLE_ADMIN
 
 
+class Map(SqlAlchemyBase, SerializerMixin):
+    __tablename__ = 'map'
+
+    id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
+    title = sqlalchemy.Column(sqlalchemy.String, unique=True, nullable=True)
+    size = sqlalchemy.Column(sqlalchemy.Integer, default=3)
+
+
+class Cell(SqlAlchemyBase):
+    __tablename__ = 'cell'
+
+    id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
+    map_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("map.id"))
+    coord = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+    is_ship = sqlalchemy.Column(sqlalchemy.Boolean, default=True)
+    prize_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("product.id"))
+    is_view = sqlalchemy.Column(sqlalchemy.Boolean, default=False)
+
+
+class UserMap(SqlAlchemyBase, SerializerMixin):
+    __tablename__ = 'user_map'
+
+    id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
+    map_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("map.id"))
+    user_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("users.id"))
+    shots = sqlalchemy.Column(sqlalchemy.Integer)
+
+
+class CellUser(SqlAlchemyBase, SerializerMixin):
+    __tablename__ = 'cell_user'
+
+    id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
+    cell_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("cell.id"))
+    user_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("users.id"))
+    att = sqlalchemy.Column(sqlalchemy.DateTime, default=datetime.utcnow)
+
+
 class Basket(SqlAlchemyBase, SerializerMixin):
     __tablename__ = 'basket'
 
-    id_ = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
+    id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
     user_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("users.id"))
     product_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("product.id_"))
     # quantity = sqlalchemy.Column(sqlalchemy.Integer, default=1)
-    # add_datetime = sqlalchemy.Column(sqlalchemy.DateTime, default=datetime.utcnow)
+    # add_datetime = с
 
     #product = orm.relation('Product')
 
@@ -68,7 +105,7 @@ class Basket(SqlAlchemyBase, SerializerMixin):
 # class ProductCategory(SqlAlchemyBase):
 #     __tablename__ = 'product_category'
 #
-#     id_ = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
+#     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
 #     name = sqlalchemy.Column(sqlalchemy.String, unique=True, nullable=True)
 #     description = sqlalchemy.Column(sqlalchemy.Text, nullable=True)
 #     is_active = sqlalchemy.Column(sqlalchemy.Boolean, default=True)
@@ -85,7 +122,7 @@ class Basket(SqlAlchemyBase, SerializerMixin):
 class Product(SqlAlchemyBase, SerializerMixin):
     __tablename__ = 'product'
 
-    id_ = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
+    id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
     name = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     image = sqlalchemy.Column(sqlalchemy.String, unique=True)
     # short_desc = sqlalchemy.Column(sqlalchemy.String, nullable=True)

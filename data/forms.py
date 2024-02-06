@@ -3,11 +3,11 @@ from flask_wtf import FlaskForm
 from flask_wtf.file import FileRequired, FileAllowed
 from wtforms import PasswordField, BooleanField, SubmitField, StringField, FileField, TextAreaField,\
     IntegerField, DecimalField, SelectField
-from wtforms.fields.html5 import EmailField
+from wtforms.fields import EmailField
 from wtforms.validators import DataRequired, ValidationError, EqualTo, Email
 
 from data import db_session
-from data.models import User, ProductCategory
+from data.models import User
 
 
 class LoginForm(FlaskForm):
