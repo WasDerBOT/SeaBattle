@@ -34,38 +34,14 @@ def load_user(user_id):
 db_session.global_init("db/data_base.sqlite")
 
 
-def get_basket(user=None):
-    db_sess = db_session.create_session()
-    if current_user.is_authenticated:
-        return db_sess.query(Basket).filter(Basket.user_id == current_user.id).all()
-    else:
-        return []
-
-
-def get_hot_product():
-    db_sess = db_session.create_session()
-    products = db_sess.query(Product).filter(Product.is_active == True).all()
-    return random.sample(list(products), 1)[0]
-
-
-def get_same_products(hot_product):
-    db_sess = db_session.create_session()
-    same_products = db_sess.query(Product).filter(Product.category == hot_product.category,
-                                                  ProductCategory.is_active == True).limit(3).all()
-    return same_products
 
 
 @app.route("/")
 @app.route("/index")
 def index():
     db_sess = db_session.create_session()
-    products = db_sess.query(Product).filter(Product.is_active == True).limit(3).all()
-    content = {
-        'title': 'Главная',
-        'products': products,
-        'basket': get_basket(),
-    }
-    return render_template("index.html", **content)
+    
+    return render_template("index.html")
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -119,69 +95,6 @@ def profile_edit():
     return render_template('profile_edit.html', title='Изменение пароля', form=form)
 
 
-@app.route('/product/<int:id>')
-def product(id):
-    title = 'продукты'
-    db_sess = db_session.create_session()
-    links_menu = db_sess.query(ProductCategory).filter(ProductCategory.is_active == True).all()
-    product = db_sess.query(Product).filter(Product.id_ == id).first()
-
-    if not product:
-        abort(404)
-    content = {
-        'title': title,
-        'links_menu': links_menu,
-        'product': product,
-        'basket': get_basket(current_user.id),
-    }
-    return render_template('product_l.html', **content)
-
-
-@app.route('/products')
-@app.route('/products/category-<int:cat>')
-def products(cat=None):
-    title = 'продукты'
-    db_sess = db_session.create_session()
-    links_menu = db_sess.query(ProductCategory).filter(ProductCategory.is_active == True)
-    basket = get_basket(current_user)
-
-    if not(cat is None):
-        if cat == 0:
-            category = {
-                'id': 0,
-                'name': 'все'
-            }
-            products = db_sess.query(Product).filter(Product.is_active == True).all()
-        else:
-            category = db_sess.query(ProductCategory).filter(ProductCategory.id_ == cat,
-                                                             ProductCategory.is_active == True).first()
-            if not category:
-                abort(404)
-            products = db_sess.query(Product).filter(Product.category_id == cat, Product.is_active == True).all()
-            if not products:
-                abort(404)
-        content = {
-            'title': title,
-            'links_menu': links_menu,
-            'category': category,
-            'products': products,
-            'basket': basket,
-        }
-
-        return render_template('products_list.html', **content)
-
-    hot_product = get_hot_product()
-    same_products = get_same_products(hot_product)
-
-    content = {
-        'title': title,
-        'links_menu': links_menu,
-        'hot_product': hot_product,
-        'same_products': same_products,
-        'basket': basket,
-    }
-
-    return render_template('products.html', **content)
 
 
 @app.errorhandler(403)
