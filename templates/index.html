@@ -1,56 +1,49 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="style.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game field</title>
-</head>
-<body>
-    <div class="field">
-        <div class="row">
-            <button></button>
-            <button></button>
-            <button></button>
-            <button></button>
-            <button></button>
+{% extends 'base_tmpl/base.html' %}
+
+{% block menu %}
+    <div class="slider">
+        <div class="header clearfix">
+                {% include 'includes/inc_menu.html' %}
         </div>
-        <div class="row">
-            <button></button>
-            <button></button>
-            <button></button>
-            <button></button>
-            <button></button>
+        <div class="text-slider">
+            <h3 class="green">тенденции</h3>
+            <h3 class="big"> удобные стулья</h3>
+            <p>Новый уровень комфорта. Отличные характеристики.</p>
+            <a href="{{ url_for('products') }}" class="button-order">
+                заказать
+                <img src="{{ url_for('static', filename=) }}" alt="">
+            </a>'img/arrow.png'
         </div>
-        <div class="row">
-            <button></button>
-            <button></button>
-            <button></button>
-            <button></button>
-            <button></button>
-        </div>
-        <div class="row">
-            <button></button>
-            <button></button>
-            <button></button>
-            <button></button>
-            <button></button>
-        </div>
-        <div class="row">
-            <button></button>
-            <button></button>
-            <button></button>
-            <button></button>
-            <button></button>
-        </div>
-        <div class="popup">
-            <p>Pop up window</p>
-            <button class="close-button" id="close-button">Close</button>
+        <div class="navi">
+            <a href="#"></a><a href="#"></a><a href="#"></a>
         </div>
     </div>
-    <script src="main.js"></script>
-        
-        
+{% endblock %}
+
+
+{% block content %}
+    <div class="featured">
+        <a class="explore" href="{{ url_for('products') }}">показать все <img src="{{ url_for('static', filename='img/arrow.png') }}" alt=""></a>
+        <div class="clearfix">
+        </div>
+        <div class="tab-content">
+            {% for product in products %}
+                <div class="block">
+                    <a href="{{ url_for('product', id=product.id_) }}">
+                        <img src="{{ product.get_image }}" alt="{{ product.short_desc }}">
+                        <div class="text">
+                            <img src="{{ url_for('static', filename='img/icon-hover.png') }}" alt="img">
+                            <h3>Категория:{{ product.category.name }}</h3>
+                            <h4>Название: {{ product.name }}</h4>
+                            <p>Описание: {{ product.description }} </p>
+                            <p>Цена: {{ product.price }} </p>
+                            <p>На складе: {{ product.quantity }} </p>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
     </div>
-</body>
-</html>
+
+    <div class="clr"></div>
+{% endblock %}

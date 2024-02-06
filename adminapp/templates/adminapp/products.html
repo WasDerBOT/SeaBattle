@@ -1,0 +1,41 @@
+{% extends 'adminapp/base.html' %}
+
+
+{% block content %}
+    <div class="products_list">
+		<button class="new_product">
+			<a href="{{ url_for('admin-app.product_create', cat_id=category.id_)  }}">новый продукт</a>
+		</button>
+		
+		{% for object in objects %}
+			<div class="product_record {% if not object.is_active %}not_active{% endif %}">
+				<img src="{{ object.get_image }}" alt="{{ object.name }}">
+				<div class="product_name">
+					{{ object.name }}
+				</div>
+				<div class="product_actions">
+					<button>
+						<a href="{{ url_for('admin-app.product_detail', id=object.id_) }}">подробнее</a>
+					</button>
+					<button>
+						<a href="{{ url_for('admin-app.product_edit', id=object.id_) }}">редактировать</a>
+					</button>
+					<button>
+						<a href="{{ url_for('admin-app.product_delete', id=object.id_) }}">
+							{% if object.is_active%}удалить{% else %}восстановить{% endif %}
+						</a>
+					</button>
+				</div>
+				<div class="summary">
+					<b>цена</b>
+					<p>{{ object.price }} руб</p>
+					<b>количество</b>
+					<p>{{ object.quantity }}</p>
+				</div>
+				<div class="product_desc">
+					{{ object.short_desc }}
+				</div>
+			</div>
+		{% endfor%}
+	</div>
+{% endblock %}

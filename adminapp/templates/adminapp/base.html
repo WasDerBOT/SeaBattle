@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>
+        {% block title %}
+            {{ title }}
+        {% endblock %}
+    </title>
+    {% block css %}
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='fonts/font-awesome/css/font-awesome.css') }}">
+    {% endblock %}
+    {% block js %}
+
+    {% endblock %}
+</head>
+<body>
+    <div class="admin_container">
+        {% include 'includes/alerts.html' %}
+        <div class="h2 text-center head">
+            Админка
+        </div>
+        <div class="admin_menu">
+          <ul class="menu">
+            <li><a href="{{ url_for('index') }}">на сайт</a></li>
+            <li>
+                <a href="">
+                    пользователи
+                </a>
+            </li>
+            <li>
+                <a href="{{ url_for('admin-app.admin_categories') }}">
+                    категории{% if category %}:<span>{{ category.name }}</span>{% endif %}
+                </a>
+            </li>
+        </ul>
+        </div>
+
+
+        {% block content %}
+
+        {% endblock %}
+
+	</div>
+
+</body>
+</html>

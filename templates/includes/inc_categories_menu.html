@@ -1,0 +1,14 @@
+<ul class="links-menu">
+    <li>
+        <a href="{{ url_for('products', cat=0) }}">
+            все
+        </a>
+    </li>
+    {% for link in links_menu %}
+        <li>
+            <a href="{{ url_for('products', cat=link.id_) }}">
+                {{ link.name }}
+            </a>
+        </li>
+    {% endfor %}
+</ul>
