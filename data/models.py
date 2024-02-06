@@ -46,7 +46,7 @@ class Basket(SqlAlchemyBase, SerializerMixin):
     # quantity = sqlalchemy.Column(sqlalchemy.Integer, default=1)
     # add_datetime = sqlalchemy.Column(sqlalchemy.DateTime, default=datetime.utcnow)
 
-    product = orm.relation('Product')
+    #product = orm.relation('Product')
 
     # @property
     # def get_product_cost(self):

@@ -1,36 +1,18 @@
 import os
 
 import flask
-from PIL import Image
 from flask import render_template, flash, url_for, request
 from flask_login import current_user
 from flask_restful import abort
 from werkzeug.utils import secure_filename, redirect
 
-from adminapp.forms import CategoryForm, ProductForm
+from .forms import CategoryForm, ProductForm
 from data import db_session
 from data.models import ProductCategory, ROLE_ADMIN, Product, User
 
 blueprint = flask.Blueprint('admin-app', __name__, template_folder='templates')
 
 
-def _resize(file_path, max_size=300, max_height=False):
-    img = Image.open(file_path)
-    width, height = img.size
-    _max_size = max(width, height)
-    if max_height:
-        img = img.resize(
-            (round(width / max_size),
-             round(height / max_size)),
-            Image.ANTIALIAS
-        )
-    elif _max_size > max_size:
-        img = img.resize(
-            (round(width / _max_size * max_size),
-            round(height / _max_size * max_size)),
-            Image.ANTIALIAS
-        )
-        img.save(file_path)
 
 @blueprint.before_request
 def before():
@@ -114,19 +96,8 @@ def product_create(cat_id):
     title = 'Админка/Продукты/Создание'
     form = ProductForm()
     if form.validate_on_submit():
-        if form.image.data:
-            image = form.image.data
-            f_name = secure_filename(image.filename)
-            i = 0
-            while os.path.exists(os.path.join('static', 'media', f_name)):
-                f_name = f'{i}-{f_name}'
-                i += 1
-            path_file = os.path.join('static', 'media', f_name)
-            image.save(path_file)
-            _resize(path_file)
         _product = Product(
             name=form.name.data,
-            image=f_name if form.image.data else None,
             short_desc=form.short_desc.data,
             description=form.description.data,
             price_=form.price.data,
@@ -160,8 +131,7 @@ def product_edit(id):
                 f_name = f'{i}-{f_name}'
                 i += 1
             path_file = os.path.join('static', 'media', f_name)
-            image.save(path_file)
-            _resize(path_file)
+            
 
         _product.name = form.name.data
         _product.image = f_name if form.image.data else _product.image
