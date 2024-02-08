@@ -20,17 +20,6 @@ def before():
         abort(403)
 
 
-@blueprint.route('/admin/categories')
-def admin_categories():
-    title = 'админка/категории'
-    db_sess = db_session.create_session()
-    categories_list = db_sess.query(ProductCategory).all()
-    content = {
-        'title': title,
-        'objects': categories_list
-    }
-    return render_template('adminapp/categories.html', **content)
-
 
 @blueprint.route('/admin/category/create', methods=['GET', 'POST'])
 def admin_category_create():
@@ -38,10 +27,7 @@ def admin_category_create():
     form = CategoryForm()
     if form.validate_on_submit():
         db_sess = db_session.create_session()
-        _category = ProductCategory(name=form.name.data, description=form.description.data)
-        db_sess.add(_category)
         db_sess.commit()
-        flash('Категория успешно добавлена')
         return redirect(url_for('admin-app.admin_categories'))
     return render_template('adminapp/_form.html', title=title, form=form)
 

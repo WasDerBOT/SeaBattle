@@ -95,7 +95,19 @@ def profile_edit():
     return render_template('profile_edit.html', title='Изменение пароля', form=form)
 
 
-
+@app.route('/size-setting', methods=['GET', 'POST'])
+@login_required
+def size_setting():
+    title = 'Size Setting'
+    form = SizeSettingForm()
+    if form.validate_on_submit():
+        db_sess = db_session.create_session()
+        # Save the user's preferred size to the database
+        current_user.size = form.size.data
+        db_sess.commit()
+        flash('Your size has been updated')
+        return redirect(url_for('index'))
+    return render_template('size_setting.html', title=title, form=form)
 
 @app.errorhandler(403)
 def authenticated_error(error):
