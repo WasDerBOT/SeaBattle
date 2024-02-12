@@ -1,0 +1,33 @@
+body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.sliderDiv{
+    background-color: aqua;
+}
+
+
+button{
+    width: 40px;
+    height: 40px;
+    background: rgba(251, 167, 0, 0.614);
+    border-radius: 5px;
+    border-color: rgba(0, 0, 0, 0);
+    margin: 2px;
+    transition: transform 0.2s ease-in-out;
+}
+
+button:hover{
+    transform: scale(1.05);
+}
+button:active {
+    transform: scale(0.95); /* decrease the size of the button on click */
+}

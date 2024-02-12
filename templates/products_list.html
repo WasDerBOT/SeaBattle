@@ -1,0 +1,31 @@
+{% extends 'base_tmpl/base.html' %}
+
+{% block content %}
+    <div class="details">
+        <div class="links clearfix">
+            {% include 'includes/inc_categories_menu.html' %}
+        </div>
+
+        <div class="products_list">
+            <div class="title clearfix">
+            </div>
+            <div class="category-products clearfix">
+                {% for product in products %}
+                    <div class="block">
+                        <a href="{{ url_for('product', id=product.id_) }}">
+                            <img src="{{ product.get_image }}" alt="{{ product.short_desc }}">
+                            <div class="text">
+                                <img src="{{ url_for('static', filename='img/icon-hover.png') }}" alt="hover">
+                                <h4>{{ product.name }}</h4>
+                                <p>{{ product.description }} </p>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="clr"></div>
+
+{% endblock %}

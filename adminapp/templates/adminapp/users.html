@@ -1,0 +1,30 @@
+{% extends 'adminapp/base.html' %}
+
+
+{% block content %}
+    <div class="users_list">
+		{% for object in users %}
+		<div class="row">
+			<div class="user_record {% if not object.is_active %}not_active{% endif %}">
+				<div class="user_role col-md-4">
+					{% if object.is_admin %}администратор{% else %}пользователь{% endif %}
+				</div>
+				<div class="user_name col-md-3">
+						<strong>{{ object.name }}</strong>
+				</div>
+				<div class="user_name col-md-3">
+					email: {{ object.email }}
+				</div>
+				<div class="col-md-2">
+					<button>
+						<a href="{{ url_for('admin-app.admin_user_set_admin', id=object.id) }}">
+							{% if object.is_admin %} Убрать права админа {% else %} Сделать админом {% endif %}
+						</a>
+					</button>
+				</div>
+
+			</div>
+		</div>
+		{% endfor%}
+	</div>
+{% endblock %}
